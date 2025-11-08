@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <h3>Set Operations in JavaScript</h3>
+
+  <script>
+    // Define two sets
+    let A = new Set([1, 2, 3, 4]);
+    let B = new Set([3, 4, 5, 6]);
+
+    // a. Union
+    let union = new Set([...A, ...B]);
+
+    // b. Intersection
+    let intersection = new Set([...A].filter(x => B.has(x)));
+
+    // c. Difference (A - B)
+    let difference = new Set([...A].filter(x => !B.has(x)));
+
+    // d. Symmetric Difference (elements in A or B but not both)
+    let symDifference = new Set([...A, ...B].filter(x => !(A.has(x) && B.has(x))));
+
+    // Display results
+    document.write("<b>Set A:</b> " + [...A] + "<br>");
+    document.write("<b>Set B:</b> " + [...B] + "<br><br>");
+    document.write("<b>a. Union:</b> " + [...union] + "<br>");
+    document.write("<b>b. Intersection:</b> " + [...intersection] + "<br>");
+    document.write("<b>c. Difference (A - B):</b> " + [...difference] + "<br>");
+    document.write("<b>d. Set Difference (Symmetric):</b> " + [...symDifference]);
+  </script>
+
+</body>
+</html>
