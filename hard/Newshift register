@@ -1,0 +1,185 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_unsigned.ALL;
+
+entity shiftregister is
+    Port ( si, clk, rst, load : in STD_LOGIC;
+           pi : in STD_LOGIC_VECTOR (3 downto 0);
+           mode : in STD_LOGIC_VECTOR (1 downto 0);
+           So : out STD_LOGIC;
+           Po : out STD_LOGIC_VECTOR (3 downto 0));
+end shiftregister;
+
+architecture Behavioral of shiftregister is
+signal temp : STD_LOGIC_VECTOR (3 downto 0);
+    --  Clock Divider Signals
+    signal slow_clk : STD_LOGIC := '0';
+    signal counter  : integer range 0 to 50000000 := 0; -- Adjust this based on board clock
+
+begin
+----------------------------------------------------------------------
+--    -- CLOCK DIVIDER PROCESS
+--    -- If your board clock = 100 MHz, this gives ~1 Hz (1 shift per sec)
+--    --------------------------------------------------------------------
+--    clk_divider : process(clk)
+--    begin
+--        if rising_edge(clk) then
+--            if counter = 50000000 then
+--                slow_clk <= NOT slow_clk;   -- Toggle slow clock
+--                counter <= 0;
+--            else
+--                counter <= counter + 1;
+--            end if;
+--        end if;
+--    end process;
+
+process(clk, rst)
+begin
+    if (rst = '1') then
+        temp <= "0000";
+        so <= '0';
+        Po <= "0000";
+
+    elsif (clk'event and clk = '1') then
+        case mode is
+        
+        -- MODE 00 : PIPO (Parallel In Parallel Out)
+        when "00" =>
+            temp <= pi;
+            Po <= temp;
+            so <= '0';
+        
+        -- MODE 01 : SISO (Serial In Serial Out)
+        when "01" =>
+            temp <= temp(2 downto 0) & si;    -- shift left
+            so <= temp(3);                    -- MSB goes to serial out
+            Po <= "0000";
+
+        -- MODE 10 : PISO (Parallel In Serial Out)
+        when "10" =>
+            if load = '1' then
+                temp <= pi;                   -- load 4-bit parallel data
+            else
+                so <= temp(3);
+                temp <= temp(2 downto 0) & '0';
+            end if;
+            Po <= "0000";
+
+        -- MODE 11 : SIPO (Serial In Parallel Out)
+        when others =>
+            if load = '0' then
+                temp <= temp(2 downto 0) & si;  -- shift left
+            else
+                Po <= temp;                     -- give parallel output
+            end if;
+            so <= '0';
+        end case;
+    end if;
+end process;
+end Behavioral;
+
+//TB
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity tb_shiftregister is
+end tb_shiftregister;
+
+architecture behavior of tb_shiftregister is
+
+    -- Component Declaration
+    component shiftregister
+        Port ( si, clk, rst, load : in STD_LOGIC;
+               pi : in STD_LOGIC_VECTOR (3 downto 0);
+               mode : in STD_LOGIC_VECTOR (1 downto 0);
+               So : out STD_LOGIC;
+               Po : out STD_LOGIC_VECTOR (3 downto 0));
+    end component;
+
+    -- Testbench signals
+    signal si, clk, rst, load : STD_LOGIC := '0';
+    signal pi : STD_LOGIC_VECTOR (3 downto 0) := "0000";
+    signal mode : STD_LOGIC_VECTOR (1 downto 0) := "00";
+    signal So : STD_LOGIC;
+    signal Po : STD_LOGIC_VECTOR (3 downto 0);
+
+begin
+
+    -- Instantiate DUT
+    uut: shiftregister
+        port map(
+            si => si,
+            clk => clk,
+            rst => rst,
+            load => load,
+            pi => pi,
+            mode => mode,
+            So => So,
+            Po => Po
+        );
+
+    -- Clock generation
+    clk_process : process
+    begin
+        clk <= '0';
+        wait for 5 ns;
+        clk <= '1';
+        wait for 5 ns;
+    end process;
+
+    -- Stimulus process
+    stim_proc: process
+    begin
+
+        -- Reset
+        rst <= '1';
+        wait for 20 ns;
+        rst <= '0';
+
+        ---------------------------------------------------
+        -- MODE 00 : PIPO
+        ---------------------------------------------------
+        mode <= "00";
+        pi <= "1010";
+        wait for 20 ns;
+
+        ---------------------------------------------------
+        -- MODE 01 : SISO (Serial Shift)
+        ---------------------------------------------------
+        mode <= "01";
+        si <= '1'; wait for 10 ns;
+        si <= '0'; wait for 10 ns;
+        si <= '1'; wait for 10 ns;
+        si <= '1'; wait for 10 ns;
+
+        ---------------------------------------------------
+        -- MODE 10 : PISO
+        ---------------------------------------------------
+        mode <= "10";
+        load <= '1';
+        pi <= "1101";
+        wait for 10 ns;
+
+        load <= '0';  -- start shifting
+        wait for 40 ns;
+
+        ---------------------------------------------------
+        -- MODE 11 : SIPO
+        ---------------------------------------------------
+        mode <= "11";
+A
+        load <= '0';  -- shift serial data in
+        si <= '1'; wait for 10 ns;
+        si <= '1'; wait for 10 ns;
+        si <= '0'; wait for 10 ns;
+        si <= '0'; wait for 10 ns;
+
+        load <= '1';  -- output parallel data
+        wait for 20 ns;
+
+        ---------------------------------------------------
+        -- End simulation
+        wait;
+    end process;
+
+end behavior;
