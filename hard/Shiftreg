@@ -1,0 +1,39 @@
+shiftregister
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_unsigned.ALL;
+
+entity shiftregister is
+    Port ( si, clk, rst, load : in STD_LOGIC;
+           pi : in STD_LOGIC_VECTOR (3 downto 0);
+           mode : in STD_LOGIC_VECTOR (1 downto 0);
+           So : out STD_LOGIC;
+           Po : out STD_LOGIC_VECTOR (3 downto 0));
+end shiftregister;
+
+architecture Behavioral of shiftregister is
+signal temp : STD_LOGIC_VECTOR (3 downto 0);
+    --  Clock Divider Signals
+    signal slow_clk : STD_LOGIC := '0';
+    signal counter  : integer range 0 to 50000000 := 0; -- Adjust this based on board clock
+
+begin
+----------------------------------------------------------------------
+--    -- CLOCK DIVIDER PROCESS
+--    -- If your board clock = 100 MHz, this gives ~1 Hz (1 shift per sec)
+--    --------------------------------------------------------------------
+--    clk_divider : process(clk)
+--    begin
+--        if rising_edge(clk) then
+--            if counter = 50000000 then
+--                slow_clk <= NOT slow_clk;   -- Toggle slow clock
+--                counter <= 0;
+--            else
+--                counter <= counter + 1;
+--            end if;
+--        end if;
+--    end process;
+
+process(clk, rst)
+begin
