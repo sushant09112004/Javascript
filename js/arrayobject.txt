@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Append Object to Array</title>
+</head>
+<body>
+<h3>Append Object to Array</h3>
+
+<script>
+// 1️⃣ Create an array
+let arr = [{ name: "Sushant" }, { name: "Varad" }];
+document.write("Initial Array:<br>");
+document.write(JSON.stringify(arr) + "<br><br>");
+
+// 2️⃣ Create an object and append it to the array
+let newObj = { name: "Kabeer" };
+arr.push(newObj);
+document.write("After Appending Object:<br>");
+document.write(JSON.stringify(arr) + "<br><br>");
+
+// 3️⃣ Check if variable is an array
+if (Array.isArray(arr)) {
+  document.write("✅ 'arr' is an array.<br>");
+} else {
+  document.write("❌ 'arr' is not an array.<br>");
+}
+</script>
+
+</body>
+</html>

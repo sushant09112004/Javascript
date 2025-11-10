@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Change Background on Hover</title>
+</head>
+<body>
+<h3>Change Background Color on Hover</h3>
+
+<input type="text" id="colorInput" placeholder="Enter a color (e.g. red, blue, #00ff00)">
+<br><br>
+
+<div id="box" tabindex="0"
+     style="width:200px; height:150px; background-color:lightgray; text-align:center; line-height:150px;">
+  Hover over me
+</div>
+
+<script>
+let box = document.getElementById("box");
+let colorInput = document.getElementById("colorInput");
+
+// on mouseover
+box.onmouseover = function() {
+  let color = colorInput.value; // take input from user
+  box.style.backgroundColor = color || "lightblue"; // default color if empty
+};
+
+// on mouseout - reset color
+box.onmouseout = function() {
+  box.style.backgroundColor = "lightgray";
+};
+</script>
+
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Simple Calculator</title>
+</head>
+<body>
+<h2>Simple Calculator</h2>
+
+<!-- Display -->
+<input type="text" id="display" readonly style="width:200px; height:30px; text-align:right;"><br><br>
+
+<!-- Number Buttons -->
+<div>
+  <button onclick="appendNumber(1)">1</button>
+  <button onclick="appendNumber(2)">2</button>
+  <button onclick="appendNumber(3)">3</button><br><br>
+  
+  <button onclick="appendNumber(4)">4</button>
+  <button onclick="appendNumber(5)">5</button>
+  <button onclick="appendNumber(6)">6</button><br><br>
+  
+  <button onclick="appendNumber(7)">7</button>
+  <button onclick="appendNumber(8)">8</button>
+  <button onclick="appendNumber(9)">9</button><br><br>
+  
+  <button onclick="appendNumber(0)">0</button>
+</div><br>
+
+<!-- Operation Buttons -->
+<div>
+  <button onclick="chooseOperation('+')">+</button>
+  <button onclick="chooseOperation('-')">-</button>
+  <button onclick="chooseOperation('*')">*</button>
+  <button onclick="calculateFactorial()">!</button>
+  <button onclick="calculateResult()">=</button>
+  <button onclick="clearDisplay()">C</button>
+</div>
+
+<script>
+let display = document.getElementById("display");
+let firstNumber = null;
+let currentOperation = null;
+
+// Append number to display
+function appendNumber(num) {
+  display.value += num;
+}
+
+// Choose operation (+, -, *)
+function chooseOperation(op) {
+  firstNumber = Number(display.value);
+  currentOperation = op;
+  display.value = "";
+}
+
+// Calculate factorial
+function calculateFactorial() {
+  let n = Number(display.value);
+  let fact = 1;
+  for (let i = 1; i <= n; i++) {
+    fact *= i;
+  }
+  display.value = fact;
+}
+
+// Calculate result for +, -, *
+function calculateResult() {
+  let secondNumber = Number(display.value);
+  let result = 0;
+
+  if (currentOperation === "+") result = firstNumber + secondNumber;
+  else if (currentOperation === "-") result = firstNumber - secondNumber;
+  else if (currentOperation === "*") result = firstNumber * secondNumber;
+
+  display.value = result;
+}
+
+// Clear display
+function clearDisplay() {
+  display.value = "";
+  firstNumber = null;
+  currentOperation = null;
+}
+</script>
+
+</body>
+</html>

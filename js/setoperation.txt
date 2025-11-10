@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Set Operations</title>
+</head>
+<body>
+<h3>Set Operations in JavaScript</h3>
+
+<script>
+// 1️⃣ Create two sets
+let A = new Set([1, 2, 3, 4, 5]);
+let B = new Set([4, 5, 6, 7, 8]);
+
+document.write("Set A: " + [...A] + "<br>");
+document.write("Set B: " + [...B] + "<br><br>");
+
+// 2️⃣ Union (all unique elements)
+let union = new Set([...A, ...B]);
+document.write("Union: " + [...union] + "<br><br>");
+
+// 3️⃣ Intersection (common elements)
+let intersection = new Set([...A].filter(x => B.has(x)));
+document.write("Intersection: " + [...intersection] + "<br><br>");
+
+// 4️⃣ Difference (elements in A but not in B)
+let difference = new Set([...A].filter(x => !B.has(x)));
+document.write("Difference (A - B): " + [...difference] + "<br><br>");
+
+// 5️⃣ Set Difference (B - A)
+let diffBA = new Set([...B].filter(x => !A.has(x)));
+document.write("Difference (B - A): " + [...diffBA] + "<br><br>");
+</script>
+
+</body>
+</html>

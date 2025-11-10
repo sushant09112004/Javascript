@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Countdown Timer</title>
+</head>
+<body>
+<h3>Countdown Timer</h3>
+
+<script>
+let time = Number(prompt("Enter countdown time in seconds:"));
+
+let timer = setInterval(() => {
+  document.body.innerHTML = "⏳ Time left: " + time + " seconds";
+  time--;
+
+  if (time < 0) {
+    clearInterval(timer);
+    document.body.innerHTML = "⏰ Time's up!";
+  }
+}, 1000);
+</script>
+
+</body>
+</html>

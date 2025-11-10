@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Compare Two Strings</title>
+</head>
+<body>
+<h3>String Comparison</h3>
+
+<script>
+let str1 = prompt("Enter first string:");
+let str2 = prompt("Enter second string:");
+
+// 1️⃣ Compare lengths
+document.write("Length of first string: " + str1.length + "<br>");
+document.write("Length of second string: " + str2.length + "<br>");
+if (str1.length == str2.length)
+  document.write("✅ Both strings have the same length.<br><br>");
+else
+  document.write("❌ Strings have different lengths.<br><br>");
+
+// 2️⃣ Compare specific characters
+let pos = prompt("Enter position to compare (starting from 0):");
+document.write("str1.charAt(" + pos + ") = " + str1.charAt(pos) + "<br>");
+document.write("str2.charAt(" + pos + ") = " + str2.charAt(pos) + "<br><br>");
+
+// 3️⃣ Compare last index of a letter
+let ch = prompt("Enter a character to find last index:");
+document.write("Last index of '" + ch + "' in str1: " + str1.lastIndexOf(ch) + "<br>");
+document.write("Last index of '" + ch + "' in str2: " + str2.lastIndexOf(ch) + "<br><br>");
+
+// 4️⃣ Convert both to uppercase
+document.write("Uppercase str1: " + str1.toUpperCase() + "<br>");
+document.write("Uppercase str2: " + str2.toUpperCase() + "<br><br>");
+
+// 5️⃣ Compare strings alphabetically
+let result = str1.localeCompare(str2);
+if (result == 0)
+  document.write("✅ Both strings are equal alphabetically.<br>");
+else if (result < 0)
+  document.write("📘 str1 comes before str2 alphabetically.<br>");
+else
+  document.write("📕 str1 comes after str2 alphabetically.<br>");
+</script>
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Form Validation</title>
+</head>
+<body>
+<h2>Student Information Form</h2>
+
+<form onsubmit="return validateForm()">
+  Name: <input type="text" id="name"><br><br>
+  Address: <input type="text" id="address"><br><br>
+  City: <input type="text" id="city"><br><br>
+  State: <input type="text" id="state"><br><br>
+  Gender: 
+  <select id="gender">
+    <option value="">Select</option>
+    <option>Male</option>
+    <option>Female</option>
+  </select><br><br>
+  Mobile: <input type="text" id="mobile"><br><br>
+  Email: <input type="text" id="email"><br><br>
+  <input type="submit" value="Submit">
+</form>
+
+<p id="msg" style="color:red;"></p>
+
+<script>
+function validateForm() {
+  let name = document.getElementById("name").value.trim();
+  let address = document.getElementById("address").value.trim();
+  let city = document.getElementById("city").value.trim();
+  let state = document.getElementById("state").value.trim();
+  let gender = document.getElementById("gender").value;
+  let mobile = document.getElementById("mobile").value.trim();
+  let email = document.getElementById("email").value.trim();
+  let msg = "";
+
+  // 1️⃣ Check if fields are empty
+  if (!name || !address || !city || !state || !gender || !mobile || !email) {
+    msg += "❌ All fields are required.<br>";
+  }
+
+  // 2️⃣ Name validation (only letters and spaces)
+  let namePattern = /^[A-Za-z\s]+$/;
+  if (name && !namePattern.test(name)) {
+    msg += "❌ Name should contain only letters.<br>";
+  }
+
+  // 3️⃣ Mobile number validation (10 digits)
+  let mobilePattern = /^[0-9]{10}$/;
+  if (mobile && !mobilePattern.test(mobile)) {
+    msg += "❌ Mobile number must be 10 digits.<br>";
+  }
+
+  // 4️⃣ Email validation (basic pattern)
+  let emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (email && !emailPattern.test(email)) {
+    msg += "❌ Invalid email format.<br>";
+  }
+
+  // Display message
+  document.getElementById("msg").innerHTML = msg;
+
+  // If no errors → success message
+  if (msg === "") {
+    alert("✅ Form submitted successfully!");
+    return true;
+  } else {
+    alert("⚠️ Please correct the errors and try again.");
+    return false;
+  }
+}
+</script>
+
+</body>
+</html>
