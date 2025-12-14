@@ -1,0 +1,1 @@
+const s = sushant ;console.log(s);
